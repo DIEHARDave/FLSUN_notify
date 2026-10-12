@@ -114,9 +114,10 @@ _NOTIFY MSG="Bed is hot, starting" PHOTO=0
 
 ## How it differs from Zmod's plugin
 
-- Zmod calls the notification macros from its own print and sensor macros. FLSun's macros don't, so a background check every 10 seconds sends the progress and filament runout messages. FLSun's `printer.cfg` isn't changed apart from one `[include]` line.
+- Zmod calls the notification macros from its own print and sensor macros. FLSun's macros don't, so a small Moonraker component (`flsun_notify`) watches Klipper's status and sends the progress, filament runout and "Printer on" messages itself, with the same switches. FLSun's `printer.cfg` isn't changed apart from one `[include]` line.
+- "Printer on" is sent when Klipper becomes ready within 5 minutes of a boot, so restarting Klipper or Moonraker later doesn't send it.
 - Zmod sends "The printer has finished printing" from `END_PRINT` (switch `notify_end`). Here Moonraker's own finished message covers it.
-- Zmod's `UPDATE_NOTIFY` reboots the printer. Here it only restarts Moonraker, which a small Moonraker component (`flsun_notify`) handles. The same component sends "Printer on" when Klipper becomes ready within 5 minutes of a boot.
+- Zmod's `UPDATE_NOTIFY` reboots the printer. Here the component only restarts Moonraker.
 - Messages are in English only for now.
 
 ## Files
