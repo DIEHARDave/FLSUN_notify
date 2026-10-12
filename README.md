@@ -84,6 +84,8 @@ name: My T1 Pro
 
 With a Discord webhook, FLSUN_notify sends Discord embeds laid out like [FlashForgeUI](https://github.com/Parallel-7/FlashForgeUI-Electron)'s instead of plain text: a colored card with the status, nozzle and bed temperatures, and while printing a progress bar, print time, ETA, layer and file name, with the camera photo inside the card. A finished print gets a "✅ Print Complete!" card with the total time. Your own `_NOTIFY` text, a runout warning or "Printer on" appears at the top of the card.
 
+<img src="docs/discord-card.png" alt="FLSUN_notify Discord card while printing: status, nozzle and bed temperatures, progress bar at 85%, print time, ETA, layer 147 of 175, file name and camera photo" width="480">
+
 The layer number is worked out from the nozzle height, because FLSun's Klipper doesn't report layers; the ETA uses the slicer's time estimate and shows in each reader's own time zone. If Discord rejects an embed, the message is sent as plain text instead. To always get plain text, add this to `flsun_notify_custom.conf` and restart Moonraker:
 
 ```ini
