@@ -13,6 +13,7 @@ MOONRAKER_CONF="${CONFIG_DIR}/moonraker.conf"
 PRINTER_CFG="${CONFIG_DIR}/printer.cfg"
 SECRETS="${DATA_DIR}/moonraker.secrets"
 MOONRAKER_URL="http://127.0.0.1:7125"
+SAVE_CONFIG_MARKER='#\*# <-* SAVE_CONFIG -*>'
 
 msg() { printf '\033[1;32m==>\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33mWARNING:\033[0m %s\n' "$*"; }
@@ -50,7 +51,13 @@ msg "Linking the Klipper macros"
 ln -sfn "${REPO_DIR}/klipper/flsun_notify.cfg" "${CONFIG_DIR}/flsun_notify.cfg"
 if ! grep -q '^\[include flsun_notify\.cfg\]' "$PRINTER_CFG"; then
     cp "$PRINTER_CFG" "${PRINTER_CFG}.flsun_notify.bak"
-    printf '\n[include flsun_notify.cfg]\n' >> "$PRINTER_CFG"
+    # Above SAVE_CONFIG's block, which must stay last: Klipper ignores the
+    # saved calibration if anything follows it.
+    if grep -q "^${SAVE_CONFIG_MARKER}" "$PRINTER_CFG"; then
+        sed -i "/^${SAVE_CONFIG_MARKER}/i [include flsun_notify.cfg]\n" "$PRINTER_CFG"
+    else
+        printf '\n[include flsun_notify.cfg]\n' >> "$PRINTER_CFG"
+    fi
 fi
 if ! grep -q '^\[save_variables\]' "$PRINTER_CFG" "${CONFIG_DIR}"/*.cfg 2> /dev/null; then
     warn "no [save_variables] section found; the macros need it for their switches"
