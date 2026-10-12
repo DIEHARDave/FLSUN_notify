@@ -82,6 +82,17 @@ url: https://discord.com/api/webhooks/123456789012345678/abcdefghijklmnopqrstuvw
 name: My T1 Pro
 ```
 
+With a Discord webhook, FLSUN_notify sends Discord embeds laid out like [FlashForgeUI](https://github.com/Parallel-7/FlashForgeUI-Electron)'s instead of plain text: a colored card with the status, nozzle and bed temperatures, and while printing a progress bar, print time, ETA, layer and file name, with the camera photo inside the card. A finished print gets a "✅ Print Complete!" card with the total time. Your own `_NOTIFY` text, a runout warning or "Printer on" appears at the top of the card.
+
+The layer number is worked out from the nozzle height, because FLSun's Klipper doesn't report layers; the ETA uses the slicer's time estimate. If Discord rejects an embed, the message is sent as plain text instead. To always get plain text, add this to `flsun_notify_custom.conf` and restart Moonraker:
+
+```ini
+[flsun_notify]
+discord_embeds: False
+```
+
+The `body:` text of Moonraker's notifiers isn't used for embeds, so changes to it in `flsun_notify_custom.conf` only show up with `discord_embeds: False` or on other services.
+
 ### Other services
 
 For other services (Matrix, ntfy, Pushover, e-mail and more), see the [Apprise URL list](https://github.com/caronc/apprise/wiki). The [Zmod notify README](https://github.com/ghzserg/notify#matrix-setup-example) has a worked Matrix example.
