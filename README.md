@@ -51,7 +51,7 @@ The installer restarts Moonraker and Klipper. It is safe to run again, for examp
 
    Replace `url` with your service's [Apprise URL](https://github.com/caronc/apprise/wiki) and `name` with your printer's name. Don't remove the `url:` line.
 
-2. Save, then run `UPDATE_NOTIFY` in the console. Moonraker restarts, and after about 20 seconds you should get the message "Notifications are set up".
+2. Save, then run `UPDATE_NOTIFY` in the console. Moonraker restarts, and after about 20 seconds you should get the message "Notifications are set up". Saving the file alone changes nothing; until you run `UPDATE_NOTIFY`, the console reminds you that the changes aren't in use.
 
 3. To send a test message at any time, run `_NOTIFY MSG=Test` in the console.
 
@@ -72,7 +72,19 @@ url: tgram://1234567890:AAAAAAAABBBBBBBBBBCCCCCCCDDDEEEEEEE/123456789
 name: My T1 Pro
 ```
 
-For other services (Discord, Matrix, ntfy, Pushover, e-mail and more), see the [Apprise URL list](https://github.com/caronc/apprise/wiki). The [Zmod notify README](https://github.com/ghzserg/notify#matrix-setup-example) has a worked Matrix example.
+### Discord
+
+In your Discord server, open the channel's settings → Integrations → Webhooks → New Webhook, then **Copy Webhook URL** and paste it as `url` unchanged:
+
+```ini
+[notify]
+url: https://discord.com/api/webhooks/123456789012345678/abcdefghijklmnopqrstuvwxyz
+name: My T1 Pro
+```
+
+### Other services
+
+For other services (Matrix, ntfy, Pushover, e-mail and more), see the [Apprise URL list](https://github.com/caronc/apprise/wiki). The [Zmod notify README](https://github.com/ghzserg/notify#matrix-setup-example) has a worked Matrix example.
 
 ## Settings
 

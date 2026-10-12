@@ -63,6 +63,8 @@ class FlsunNotify:
             "flsun_notify_update", self._handle_update)
         self.server.register_event_handler(
             "server:klippy_ready", self._handle_klippy_ready)
+        self.server.register_event_handler(
+            "file_manager:filelist_changed", self._handle_file_changed)
 
     # flsun_notify.txt is the user's copy; if it went missing (FLSun firmware
     # updates can reset the config folder), rebuild it from the secrets.
@@ -141,6 +143,36 @@ class FlsunNotify:
     def _respond(self, msg: str) -> None:
         self.server.send_event("server:gcode_response", f"// {msg}")
 
+    # Saved in flsun_notify.txt but not copied to the secrets yet, i.e.
+    # UPDATE_NOTIFY hasn't been run since the last edit.
+    def _settings_pending(self) -> bool:
+        try:
+            values = self._read_settings()
+        except (OSError, ValueError, configparser.Error):
+            return False
+        current = self._read_secrets().get(SECTION)
+        if not isinstance(current, dict):
+            return True
+        return any(
+            str(current.get(k, "")).strip() != str(v).strip()
+            for k, v in values.items()
+        )
+
+    def _remind_if_pending(self) -> None:
+        if self._settings_pending():
+            self._respond(
+                f"FLSUN_notify: {self.settings_file.name} has changes that "
+                "aren't in use yet. Run UPDATE_NOTIFY to apply them.")
+
+    def _handle_file_changed(self, info: Dict[str, Any]) -> None:
+        item = info.get("item", {})
+        if (
+            info.get("action") in ("create_file", "modify_file")
+            and item.get("root") == "config"
+            and item.get("path") == self.settings_file.name
+        ):
+            self._remind_if_pending()
+
     async def _handle_update(self) -> None:
         try:
             values = self._read_settings()
@@ -172,6 +204,7 @@ class FlsunNotify:
             self.boot_checked = True
             await self._send("Notifications are set up", photo=False)
             return
+        self._remind_if_pending()
         if self.boot_checked:
             return
         self.boot_checked = True
