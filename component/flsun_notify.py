@@ -527,11 +527,13 @@ class FlsunNotify:
         elif progress > .01:
             remaining = elapsed / progress - elapsed
         if remaining is not None:
-            eta = datetime.datetime.now() + datetime.timedelta(
-                seconds=remaining)
+            # Discord shows <t:...> in each reader's own time zone, so the
+            # printer's clock zone doesn't matter.
+            eta = int(datetime.datetime.now(
+                datetime.timezone.utc).timestamp() + remaining)
             fields.append({
                 "name": "ETA",
-                "value": eta.strftime("%I:%M %p").lstrip("0"),
+                "value": f"<t:{eta}:t>",
                 "inline": True,
             })
         layer = self._layer(stats, status, meta)
