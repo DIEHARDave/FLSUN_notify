@@ -1,5 +1,7 @@
 # FLSUN_notify
 
+> **Parts:** the printers, boards, readers and other gear that go with this project are listed at [projects.die-hard.net/gear](https://projects.die-hard.net/gear) (Amazon affiliate links).
+
 Print notifications for the **FLSun T1 Pro**, sent to Telegram, Discord, Matrix, ntfy, e-mail or any of the [100+ services Apprise supports](https://github.com/caronc/apprise/wiki), with a camera photo attached.
 
 It's a port of ghzserg's [notify plugin for Zmod](https://github.com/ghzserg/notify) (Flashforge AD5X/AD5M). The macros, switches and settings file work the same way, so Zmod's instructions apply here too. Like the original, it uses the notifier and Apprise already built into the T1 Pro's Moonraker, so it doesn't need an external server or bot.
