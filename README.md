@@ -1,5 +1,10 @@
 # FLSUN_notify
 
+> [!IMPORTANT]
+> **This project is archived and no longer maintained.** Use [**FLSUN_pushraker**](https://github.com/DIEHARDave/FLSUN_pushraker) instead. It installs [pushraker](https://github.com/noon92/pushraker) on the T1 Pro, giving push notifications with camera snapshots for print start, pause, progress, first layer, complete, cancel, faults and more. You set it up on its own live settings page at `http://<printer-ip>/notifications/`, with no restarts, and it updates from Mainsail's and Fluidd's update manager. It needs [FLSUN_moonraker](https://github.com/DIEHARDave/FLSUN_moonraker).
+>
+> With [FLSUN_Updater](https://github.com/DIEHARDave/FLSUN_Updater), set `flsun_notify: no` and `flsun_pushraker: yes` in `flsun_plugins.cfg`. By hand, remove this plugin first with `~/FLSUN_notify/uninstall.sh && rm -rf ~/FLSUN_notify`.
+
 > **Parts:** the printers, boards, readers and other gear that go with this project are listed at [projects.die-hard.net/gear](https://projects.die-hard.net/gear) (Amazon affiliate links).
 
 Print notifications for the **FLSun T1 Pro**, sent to Telegram, Discord, Matrix, ntfy, e-mail or any of the [100+ services Apprise supports](https://github.com/caronc/apprise/wiki), with a camera photo attached.
